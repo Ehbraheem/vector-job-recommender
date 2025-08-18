@@ -16,15 +16,15 @@ async function main() {
     const collection = await getCollection();
     const jobTexts = jobPostings.map(flattenJob);
 
-    // const embeddingsData = await generateEmbeddings(jobTexts);
+    const embeddingsData = await generateEmbeddings(jobTexts);
 
-    // const jobsWithEmbedding = jobPostings.map((job, index) => ({
-    //   ...job,
-    //   embedding: embeddingsData[index],
-    // }));
+    const jobsWithEmbedding = jobPostings.map((job, index) => ({
+      ...job,
+      embedding: embeddingsData[index],
+    }));
 
     // Write job data to DB
-    // await collection.insertMany(jobsWithEmbedding);
+    await collection.insertMany(jobsWithEmbedding);
 
     const filterCriteria = await extractFilterCriteria(query);
 
