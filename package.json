@@ -1,0 +1,18 @@
+{
+  "name": "mongodb-vector",
+  "version": "1.0.0",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "Bolatan Ibrahim <Ehbraheem, ehbraheem@gmail.com>",
+  "license": "MIT",
+  "description": "Job Recommendation System",
+  "dependencies": {
+    "@huggingface/inference": "^4.7.1",
+    "dotenv": "^17.2.1",
+    "mongodb": "^6.18.0"
+  }
+}
