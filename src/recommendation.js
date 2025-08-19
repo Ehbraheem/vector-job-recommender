@@ -5,7 +5,7 @@ import {
   performSimilaritySearch,
   storeEmbeddings,
 } from "./utils/db.js";
-import { extractFilterCriteria, generateEmbeddings } from "./utils/hf.js";
+import { extractFilterCriteria } from "./utils/hf.js";
 
 const require = localRequire(import.meta.url);
 
