@@ -3,6 +3,7 @@ import {
   closeMongoDBConnection,
   getCollection,
   performSimilaritySearch,
+  storeEmbeddings,
 } from "./utils/db.js";
 import { extractFilterCriteria, generateEmbeddings } from "./utils/hf.js";
 
@@ -14,17 +15,9 @@ async function main() {
   const query = "reative Studio";
   try {
     const collection = await getCollection();
-    const jobTexts = jobPostings.map(flattenJob);
 
-    const embeddingsData = await generateEmbeddings(jobTexts);
-
-    const jobsWithEmbedding = jobPostings.map((job, index) => ({
-      ...job,
-      embedding: embeddingsData[index],
-    }));
-
-    // Write job data to DB
-    await collection.insertMany(jobsWithEmbedding);
+    // Store job embedding in the DB
+    await storeEmbeddings(collection, jobPostings);
 
     const filterCriteria = await extractFilterCriteria(query);
 

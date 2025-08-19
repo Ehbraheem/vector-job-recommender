@@ -2,6 +2,7 @@ import "./env.js";
 import { env } from "node:process";
 import { MongoClient } from "mongodb";
 import { generateEmbeddings } from "./hf.js";
+import { flattenJob } from "./utils.js";
 
 const { MONGO_HOST, MONGO_USER, MONGO_PASS, MONGO_DB, MONGO_COLLECTION } = env;
 
@@ -35,6 +36,26 @@ export async function getCollection() {
   const db = await connectToMongoDB();
 
   return db.collection(MONGO_COLLECTION);
+}
+
+export async function storeEmbeddings(collections, jobPostings) {
+  try {
+    const jobTexts = jobPostings.map(flattenJob);
+
+    const embeddingsData = await generateEmbeddings(jobTexts);
+
+    const jobsWithEmbedding = jobPostings.map((job, index) => ({
+      ...job,
+      embedding: embeddingsData[index],
+    }));
+
+    // Write job data to DB
+    await collection.insertMany(jobsWithEmbedding);
+    console.log("Stored embeddings in MongoDB.");
+  } catch (error) {
+    console.error("Error storing embeddings in MongoDB:", error);
+    throw error;
+  }
 }
 
 export async function performSimilaritySearch(collection, queryTerm) {
